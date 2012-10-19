@@ -1,3 +1,3 @@
-# ${projectName} extension
+# ${ProjectName} extension
 
 This is an extension for [publet](https://eknet.org/main/projects/publet/index.html) ...

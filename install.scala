@@ -9,15 +9,22 @@ import java.nio.file._
 import attribute.BasicFileAttributes
 import scala.collection.JavaConversions._
 
+def camelCase(str: String) = {
+  val w = "([\\w]+)".r
+  val s = "([^\\w]+)".r
+  val text = w.replaceAllIn(str, m => m.matched.toLowerCase.capitalize)
+  s.replaceAllIn(text, "")
+}
+
 val source = Source.stdin
 
 print("groupId: ")
 val groupId = source.getLines().toStream(0)
-val groupIdPath = groupId.replaceAll("\\.", File.separator)
+val groupIdPath = groupId.replace(".", File.separator)
 
 print("projectId: ")
 val projectId = source.getLines().toStream(0)
-
+val cProjectId = camelCase(projectId)
 
 def filter(f: File) {
   val temp = File.createTempFile(f.getName, "")
@@ -25,6 +32,7 @@ def filter(f: File) {
   Source.fromFile(f, "UTF-8").getLines() foreach { line =>
     val repl = line.replace("${groupId}", groupId)
       .replace("${groupIdPath}", groupIdPath)
+      .replace("${ProjectName}", cProjectId)
       .replace("${projectId}", projectId)
     out.write(repl+"\n")
   }
@@ -32,7 +40,8 @@ def filter(f: File) {
   Files.move(temp.toPath, f.toPath, StandardCopyOption.REPLACE_EXISTING)
 }
 
-Files.walkFileTree(FileSystems.getDefault.getPath(""), new SimpleFileVisitor[Path]() {
+val workingDir = FileSystems.getDefault.getPath("")
+val filterVisitor = new SimpleFileVisitor[Path]() {
 
   override def preVisitDirectory(dir: Path, attrs: BasicFileAttributes) = {
     if (dir.toString.startsWith("."))
@@ -51,4 +60,33 @@ Files.walkFileTree(FileSystems.getDefault.getPath(""), new SimpleFileVisitor[Pat
     }
     super.visitFile(file, attrs)
   }
-})
+}
+
+val renameVisitor = new SimpleFileVisitor[Path]() {
+
+  override def postVisitDirectory(dir: Path, exc: java.io.IOException) = {
+    if (dir.endsWith("__groupId__")) {
+      val np = dir.resolveSibling(groupIdPath)
+      Files.createDirectories(np.getParent)
+      Files.move(dir, np)
+    }
+    super.postVisitDirectory(dir, exc)
+  }
+  override def visitFile(file: Path, attrs: BasicFileAttributes) = {
+    val name = file.getFileName
+    if (name.toString.contains("__projectId__")) {
+      Files.move(file, file.resolveSibling(name.toString.replace("__projectId__", projectId)))
+    }
+    if (name.toString.contains("__ProjectName__")) {
+      Files.move(file, file.resolveSibling(name.toString.replace("__ProjectName__", cProjectId)))
+    }
+    FileVisitResult.CONTINUE
+  } 
+}
+
+Files.walkFileTree(workingDir, filterVisitor)
+Files.walkFileTree(workingDir, renameVisitor)
+
+println("Done.")
+println("Remove the install.scala script and the .git/ directory.")
+
