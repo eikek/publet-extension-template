@@ -1,6 +1,6 @@
 //
 // Simple script that renames the project skeleton
-// according to your input.
+// according to your input. Needs JDK7
 
 
 import io.Source
@@ -30,10 +30,11 @@ def filter(f: File) {
   val temp = File.createTempFile(f.getName, "")
   val out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(temp), "UTF-8"))
   Source.fromFile(f, "UTF-8").getLines() foreach { line =>
-    val repl = line.replace("${groupId}", groupId)
-      .replace("${groupIdPath}", groupIdPath)
-      .replace("${ProjectName}", cProjectId)
-      .replace("${projectId}", projectId)
+    val repl = line.replace("__groupId__", groupId)
+      .replace("__groupIdPath__", groupIdPath)
+      .replace("__ProjectName__", cProjectId)
+      .replace("sbt__projectId__", projectId)
+      .replace("__projectId__", projectId)
     out.write(repl+"\n")
   }
   out.close()
@@ -55,7 +56,7 @@ val filterVisitor = new SimpleFileVisitor[Path]() {
 
   override def visitFile(file: Path, attrs: BasicFileAttributes) = {
     if (file.toString != "install.scala") {
-      println(file)
+      println("Filtering: "+ file)
       filter(file.toFile)
     }
     super.visitFile(file, attrs)
@@ -87,6 +88,7 @@ val renameVisitor = new SimpleFileVisitor[Path]() {
 Files.walkFileTree(workingDir, filterVisitor)
 Files.walkFileTree(workingDir, renameVisitor)
 
-println("Done.")
-println("Remove the install.scala script and the .git/ directory.")
+println("\nDone.")
+println("Remove the src/install.scala script and the .git/ directory. Then you")
+println("can start sbt and compile the project.\n")
 

@@ -1,12 +1,12 @@
-package ${groupId}
+package __groupId__
 
 import com.google.inject.AbstractModule
 import org.eknet.publet.web.guice.{PubletModule, PubletBinding}
 
-class ${ProjectName}Module extends AbstractModule with PubletBinding with PubletModule {
+class __ProjectName__Module extends AbstractModule with PubletBinding with PubletModule {
 
   def configure() {
-    binder.bindEagerly[${ProjectName}Setup]
+    binder.bindEagerly[__ProjectName__Setup]
   }
 
 }

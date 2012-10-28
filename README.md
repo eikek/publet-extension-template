@@ -8,11 +8,11 @@ Clone this project
 
 and then execute the `install.scala` script
 
-    scala install.scala
+    scala src/install.scala
 
 This will ask for a `groupId` and `projectId` and then renames and filters
 the files. After that, just remove the `intall.scala` script and start 
 [sbt](https://github.com/harrah/xsbt).
 
 The [publet-sbt-plugin](https://eknet.org/gitr/?r=publet-sbt-plugin.git) is 
-configured and you can start publet using `publet-start` sbt task.
+configured and you can start publet using `publet:start` sbt task.

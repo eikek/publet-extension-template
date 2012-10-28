@@ -1,4 +1,4 @@
-package ${groupId}
+package __groupId__
 
 import org.eknet.publet.web.guice.PubletStartedEvent
 import com.google.inject.{Inject, Singleton}
@@ -10,7 +10,7 @@ import org.eknet.publet.vfs.util.ClasspathContainer
 import org.eknet.publet.vfs.Path
 
 @Singleton
-class ${ProjectName}Setup @Inject() (publet: Publet, assetMgr: AssetManager) extends AssetCollection {
+class __ProjectName__Setup @Inject() (publet: Publet, assetMgr: AssetManager) extends AssetCollection {
 
   override def classPathBase = "/${groupIdPath}/includes"
 
