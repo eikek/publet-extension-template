@@ -12,7 +12,8 @@ and then execute the `install.scala` script
 
 This will ask for a `groupId` and `projectId` and then renames and filters
 the files. After that, just remove the `intall.scala` script and start 
-[sbt](https://github.com/harrah/xsbt).
+[sbt](https://github.com/harrah/xsbt). The script needs JDK7 to run.
 
 The [publet-sbt-plugin](https://eknet.org/gitr/?r=publet-sbt-plugin.git) is 
-configured and you can start publet using `publet:start` sbt task.
+configured and you can start publet with the new extension using `publet:start`
+sbt task.
