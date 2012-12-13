@@ -8,7 +8,7 @@ object Resolvers {
 object Version {
   val slf4j = "1.7.2"
   val logback = "1.0.9"
-  val scalaTest = "2.0.M6-SNAP1"
+  val scalaTest = "2.0.M6-SNAP3"
   val grizzled = "0.6.9"
   val scala = "2.9.2"
   val servlet = "3.0.1"
@@ -60,7 +60,7 @@ object RootBuild extends Build {
     pomIncludeRepository := (_ => false),
     scalacOptions ++= Seq("-unchecked", "-deprecation"),
     resolvers += Resolvers.eknet,
-    licenses := Seq(("ASL2", new URL("htp://www.apache.org/licenses/LICENSE-2.0.txt")))
+    licenses := Seq(("ASL2", new URL("http://www.apache.org/licenses/LICENSE-2.0.txt")))
   )
 
   val deps = Seq(publetWeb, publetAppPlugin, servletApiProvided)
