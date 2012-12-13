@@ -6,9 +6,9 @@ object Resolvers {
   val eknet = "eknet.org" at "https://eknet.org/maven2"
 }
 object Version {
-  val slf4j = "1.6.4"
-  val logback = "1.0.1"
-  val scalaTest = "1.8"
+  val slf4j = "1.7.2"
+  val logback = "1.0.9"
+  val scalaTest = "2.0.M6-SNAP1"
   val grizzled = "0.6.9"
   val scala = "2.9.2"
   val servlet = "3.0.1"
@@ -17,11 +17,12 @@ object Version {
 
 object Dependencies {
 
-  val scalaTest = "org.scalatest" %% "scalatest" % Version.scalaTest % "test" withSources()
-  val publetApp = "org.eknet.publet" %% "publet-app" % Version.publet % "publet"
-  val publetWeb = "org.eknet.publet" %% "publet-web" % Version.publet % "provided" withSources()
-  val servletApi = "javax.servlet" % "javax.servlet-api" % Version.servlet withSources()
-  val servletApiProvided = servletApi % "provided"
+  val scalaTest = "org.scalatest" %% "scalatest" % Version.scalaTest % "test"
+  val publetAppDev = "org.eknet.publet" %% "publet-app" % Version.publet
+  val publetAppPlugin = publetAppDev % "publet"
+
+  val publetWeb = "org.eknet.publet" %% "publet-web" % Version.publet % "provided"
+  val servletApiProvided = "javax.servlet" % "javax.servlet-api" % Version.servlet % "provided"
 }
 
 // Root Module 
@@ -33,7 +34,18 @@ object RootBuild extends Build {
     id = "sbt__projectId__",
     base = file("."),
     settings = buildSettings
-  ) 
+  )
+
+  //an empty project to create a classpath to be
+  //able to start publet from the ide via a "main class"
+  lazy val runner = Project(
+    id = "publet-runner",
+    base = file("runner"),
+    settings = Project.defaultSettings ++ Seq(
+      name := "publet-runner",
+      libraryDependencies ++= Seq(publetAppDev)
+    )
+  ) dependsOn (root)
 
   val buildSettings = Project.defaultSettings ++ Seq(
     name := "__projectId__",
@@ -41,22 +53,17 @@ object RootBuild extends Build {
   ) ++ PubletPlugin.publetSettings
 
   override lazy val settings = super.settings ++ Seq(
-    version := "1.0.0-SNAPSHOT",
+    version := "0.1.0-SNAPSHOT",
     organization := "__groupId__",
     scalaVersion := Version.scala,
     exportJars := true,
+    pomIncludeRepository := (_ => false),
     scalacOptions ++= Seq("-unchecked", "-deprecation"),
-    resolvers += Resolvers.eknet
-/*    pomExtra := <licenses>
-      <license>
-        <name>Apache 2</name>
-        <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-        <distribution>repo</distribution>
-      </license>
-    </licenses> */
+    resolvers += Resolvers.eknet,
+    licenses := Seq(("ASL2", new URL("htp://www.apache.org/licenses/LICENSE-2.0.txt")))
   )
 
-  val deps = Seq(publetWeb, publetApp, servletApiProvided)
+  val deps = Seq(publetWeb, publetAppPlugin, servletApiProvided)
 }
 
 
