@@ -12,7 +12,7 @@ object Version {
   val grizzled = "0.6.9"
   val scala = "2.9.2"
   val servlet = "3.0.1"
-  val publet = "1.0.0-SNAPSHOT"
+  val publet = "1.0.0"
 }
 
 object Dependencies {
@@ -50,7 +50,7 @@ object RootBuild extends Build {
   val buildSettings = Project.defaultSettings ++ ReflectPlugin.allSettings ++ Seq(
     name := "__projectId__",
     ReflectPlugin.reflectPackage := "__groupId__",
-    resourceGenerators in Compile <+= ReflectPlugin.reflect,
+    sourceGenerators in Compile <+= ReflectPlugin.reflect,
     libraryDependencies ++= deps
   ) ++ PubletPlugin.publetSettings
 
