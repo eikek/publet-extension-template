@@ -47,8 +47,10 @@ object RootBuild extends Build {
     )
   ) dependsOn (root)
 
-  val buildSettings = Project.defaultSettings ++ Seq(
+  val buildSettings = Project.defaultSettings ++ ReflectPlugin.allSettings ++ Seq(
     name := "__projectId__",
+    ReflectPlugin.reflectPackage := "__groupId__",
+    resourceGenerators in Compile <+= ReflectPlugin.reflect,
     libraryDependencies ++= deps
   ) ++ PubletPlugin.publetSettings
 
