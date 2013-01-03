@@ -18,10 +18,10 @@ object Version {
 object Dependencies {
 
   val scalaTest = "org.scalatest" %% "scalatest" % Version.scalaTest % "test"
-  val publetAppDev = "org.eknet.publet" %% "publet-app" % Version.publet
-  val publetAppPlugin = publetAppDev % "publet"
+  val publetAppDev = "org.eknet.publet" %% "publet-app" % Version.publet exclude("org.restlet.jse", "org.restlet.ext.fileupload") exclude("org.restlet.jse", "org.restlet") exclude("org.slf4j", "slf4j-log4j12")
+  val publetAppPlugin = publetAppDev % "publet" exclude("org.restlet.jse", "org.restlet.ext.fileupload") exclude("org.restlet.jse", "org.restlet") exclude("org.slf4j", "slf4j-log4j12")
 
-  val publetWeb = "org.eknet.publet" %% "publet-web" % Version.publet % "provided"
+  val publetWeb = "org.eknet.publet" %% "publet-web" % Version.publet % "provided" exclude("org.restlet.jse", "org.restlet.ext.fileupload") exclude("org.restlet.jse", "org.restlet") exclude("org.slf4j", "slf4j-log4j12")
   val servletApiProvided = "javax.servlet" % "javax.servlet-api" % Version.servlet % "provided"
 }
 
