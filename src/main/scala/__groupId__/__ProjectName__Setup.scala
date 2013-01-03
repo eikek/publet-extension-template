@@ -12,12 +12,12 @@ import org.eknet.publet.vfs.Path
 @Singleton
 class __ProjectName__Setup @Inject() (publet: Publet, assetMgr: AssetManager) extends AssetCollection {
 
-  override def classPathBase = "/${groupIdPath}/includes"
+  override def classPathBase = "/__groupIdPath__/includes"
 
   @Subscribe
   def mountResources(event: PubletStartedEvent) {
 
-    val myAssets = Group("${projectId}.assets")
+    val myAssets = Group("__projectId__.assets")
       .add(resource("css/mytheme.css"))
       .require(DefaultLayout.Assets.bootstrap.name)
 
@@ -26,7 +26,7 @@ class __ProjectName__Setup @Inject() (publet: Publet, assetMgr: AssetManager) ex
     assetMgr setup
       Group("default").use(myAssets.name)
 
-    val cont = new ClasspathContainer(base = "/${groupIdPath}/includes/templ/")
-    publet.mountManager.mount(Path("/publet/${projectId}"), cont)
+    val cont = new ClasspathContainer(base = "/__groupIdPath__/includes/templ/")
+    publet.mountManager.mount(Path("/publet/__projectId__"), cont)
   }
 }
