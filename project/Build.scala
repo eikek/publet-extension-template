@@ -4,6 +4,7 @@ import Dependencies._
 
 object Resolvers {
   val eknet = "eknet.org" at "https://eknet.org/maven2"
+  val milton = "milton.io" at "http://milton.io/maven"
 }
 object Version {
   val slf4j = "1.7.2"
@@ -61,7 +62,7 @@ object RootBuild extends Build {
     exportJars := true,
     pomIncludeRepository := (_ => false),
     scalacOptions ++= Seq("-unchecked", "-deprecation"),
-    resolvers += Resolvers.eknet,
+    resolvers ++= Seq(Resolvers.eknet, Resolvers.milton),
     licenses := Seq(("ASL2", new URL("http://www.apache.org/licenses/LICENSE-2.0.txt")))
   )
 
