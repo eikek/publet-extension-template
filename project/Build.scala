@@ -63,7 +63,12 @@ object RootBuild extends Build {
     pomIncludeRepository := (_ => false),
     scalacOptions ++= Seq("-unchecked", "-deprecation"),
     resolvers ++= Seq(Resolvers.eknet, Resolvers.milton),
-    licenses := Seq(("ASL2", new URL("http://www.apache.org/licenses/LICENSE-2.0.txt")))
+    licenses := Seq(("ASL2", new URL("http://www.apache.org/licenses/LICENSE-2.0.txt"))),
+
+    // see https://jira.codehaus.org/browse/JETTY-1493
+    ivyXML := <dependency org="org.eclipse.jetty.orbit" name="javax.servlet" rev="3.0.0.v201112011016">
+        <artifact name="javax.servlet" type="orbit" ext="jar"/>
+    </dependency>
   )
 
   val deps = Seq(publetWeb, publetAppPlugin, servletApiProvided)
